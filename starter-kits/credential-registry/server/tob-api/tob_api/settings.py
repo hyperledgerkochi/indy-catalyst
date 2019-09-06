@@ -144,6 +144,7 @@ AUTH_PASSWORD_VALIDATORS = [
 AUTH_USER_MODEL = "api_v2.User"
 
 REST_FRAMEWORK = {
+    #"DEFAULT_VERSIONING_CLASS": "rest_framework.versioning.NamespaceVersioning",
     "DEFAULT_PAGINATION_CLASS": "tob_api.pagination.EnhancedPageNumberPagination",
     "PAGE_SIZE": 10,
     "DEFAULT_AUTHENTICATION_CLASSES": authentication.defaults(),
@@ -316,8 +317,10 @@ HOOK_EVENTS = {
 # celery settings
 CELERY_BROKER_HEARTBEAT = 0  # see https://github.com/celery/celery/issues/4817
 
-CELERY_BROKER_URL = "pyamqp://{}:{}@rabbitmq//".format(
-    os.environ.get("RABBITMQ_USER"), os.environ.get("RABBITMQ_PASSWORD")
+CELERY_BROKER_URL = "pyamqp://{}:{}@{}//".format(
+    os.environ.get("RABBITMQ_USER"), 
+    os.environ.get("RABBITMQ_PASSWORD"), 
+    os.environ.get("RABBITMQ_SVC_NAME", "rabbitmq")
 )
 
 # custom hook settings

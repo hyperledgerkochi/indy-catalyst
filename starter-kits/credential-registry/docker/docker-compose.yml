@@ -6,6 +6,7 @@ services:
   tob-web:
     image: angular-on-nginx
     environment:
+      - DEBUG=${DEBUG}
       - API_URL=${API_URL}
       - APPLICATION_URL=${APPLICATION_URL}
       - IpFilterRules=${IpFilterRules}
@@ -112,8 +113,9 @@ services:
       - APPLICATION_URL=${APPLICATION_URL}
       - RABBITMQ_USER=${RABBITMQ_USER}
       - RABBITMQ_PASSWORD=${RABBITMQ_PASSWORD}
-      - AGENT_ADMIN_URL=http://tob-api:${AGENT_ADMIN_PORT}
+      - AGENT_ADMIN_URL=http://tob-agent:${AGENT_ADMIN_PORT}
       - AGENT_WEBHOOK_PORT=${AGENT_WEBHOOK_PORT}
+      - AGENT_ADMIN_API_KEY=${AGENT_ADMIN_API_KEY}
     volumes:
       - ../server/tob-api/tob_api:/home/indy/tob_api
       - ../server/tob-api/api_v2:/home/indy/api_v2
@@ -174,7 +176,7 @@ services:
         "-c",
         "curl -d '{\"seed\":\"${INDY_WALLET_SEED}\", \"role\":\"TRUST_ANCHOR\", \"alias\":\"${AGENT_NAME}\"}' -X POST ${LEDGER_URL}/register; \
         sleep 2; \
-        aca-py \
+        aca-py start \
         --inbound-transport http '0.0.0.0' ${HTTP_INTERFACE_PORT} \
         --inbound-transport ws '0.0.0.0' ${WS_INTERFACE_PORT} \
         --endpoint ${AGENT_ENDPOINT} \
@@ -196,8 +198,9 @@ services:
         --wallet-storage-creds '{\"account\":\"${POSTGRESQL_USER}\",\"password\":\"${POSTGRESQL_PASSWORD}\",\"admin_account\":\"postgres\",\"admin_password\":\"${POSTGRESQL_ADMIN_PASSWORD}\"}' \
         --seed '${INDY_WALLET_SEED}' \
         --admin '0.0.0.0' ${AGENT_ADMIN_PORT} \
-        --admin-insecure-mode \
+        --${AGENT_ADMIN_MODE} \
         --label ${AGENT_NAME} \
+        --label debug \
         --protocol indy_catalyst_issuer_registration",
       ]
 

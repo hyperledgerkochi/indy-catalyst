@@ -4,7 +4,8 @@ import logging
 from collections import OrderedDict
 
 from django.db.models.manager import Manager
-from drf_haystack.serializers import HaystackFacetSerializer, HaystackSerializerMixin
+from drf_haystack.serializers import (HaystackFacetSerializer,
+                                      HaystackSerializerMixin)
 from rest_framework.serializers import ListSerializer, SerializerMethodField
 from rest_framework.utils.serializer_helpers import ReturnDict
 
@@ -14,22 +15,18 @@ from api_v2.models.CredentialType import CredentialType
 from api_v2.models.Issuer import Issuer
 from api_v2.models.Name import Name
 from api_v2.search_indexes import CredentialIndex
-from api_v2.serializers.rest import (
-    AddressSerializer,
-    AttributeSerializer,
-    CredentialAddressSerializer,
-    CredentialAttributeSerializer,
-    CredentialNamedTopicSerializer,
-    CredentialNameSerializer,
-    CredentialSerializer,
-    CredentialSetSerializer,
-    CredentialTopicExtSerializer,
-    CredentialTypeSerializer,
-    IssuerSerializer,
-    NameSerializer,
-    TopicRelationshipSerializer,
-    TopicSerializer,
-)
+from api_v2.serializers.rest import (AddressSerializer, AttributeSerializer,
+                                     CredentialAddressSerializer,
+                                     CredentialAttributeSerializer,
+                                     CredentialNamedTopicSerializer,
+                                     CredentialNameSerializer,
+                                     CredentialSerializer,
+                                     CredentialSetSerializer,
+                                     CredentialTopicExtSerializer,
+                                     CredentialTypeSerializer,
+                                     IssuerSerializer, NameSerializer,
+                                     TopicRelationshipSerializer,
+                                     TopicSerializer)
 
 logger = logging.getLogger(__name__)
 
@@ -176,7 +173,7 @@ class CustomTopicSerializer(TopicSerializer):
     def get_attributes(self, obj):
         attributes = Attribute.objects.filter(
             credential__topic=obj,
-            credential__credential_type__description="Registration",
+            credential__credential_type__description=obj.type,
             credential__latest=True,
             credential__revoked=False,
         ).order_by("credential__inactive")
@@ -237,7 +234,7 @@ class CredentialSearchSerializer(HaystackSerializerMixin, CredentialSerializer):
             "latest",
             "revoked",
             "revoked_date",
-            "wallet_id",
+            "credential_exchange_id",
             "credential_set",
             "credential_type",
             "addresses",
@@ -255,7 +252,7 @@ class CredentialSearchSerializer(HaystackSerializerMixin, CredentialSerializer):
             "schema_version",
             "topic_id",
             "topic_type",
-            "wallet_id",
+            "credential_exchange_id",
         )
         # used by HaystackFilter
         search_fields = ("location", "effective_date", "revoked_date", "score")
@@ -289,7 +286,7 @@ class CredentialTopicSearchSerializer(CredentialSearchSerializer):
             "latest",
             "revoked",
             "revoked_date",
-            "wallet_id",
+            "credential_exchange_id",
             "credential_set",
             "credential_type",
             "attributes",

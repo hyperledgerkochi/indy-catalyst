@@ -14,7 +14,8 @@ whitenoise>=4.1.0,<4.2
 
 # Documentation
 # django_rest_swagger>=2.1.2,<3
-drf-yasg==1.16.0
+drf-yasg>=1.10.2,<2
+packaging>=19.0,<20
 flex>=6.13.2,<7
 swagger-spec-validator>=2.4.0,<3
 
@@ -48,6 +49,8 @@ ptvsd==4.1.1a1
 # aiohttp
 aiohttp~=3.4.0
 aiohttp-wsgi~=0.8.1
+
+asgiref~=3.1.2
 
 # rest hooks and related
 django-rest-hooks==1.5.0
