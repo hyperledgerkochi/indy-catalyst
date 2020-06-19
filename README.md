@@ -26,11 +26,13 @@
   - [Who is Indy Catalyst For](#who-is-indy-catalyst-for)
   - [Key Technical Elements](#key-technical-elements)
     - [Credential Registry](#credential-registry)
+    - [Web Hooks](#web-hooks)
     - [Agent](#agent)
     - [Agent Driver](#agent-driver)
     - [Starter Kits](#starter-kits)
       - [Credential Registry Holder-Prover](#credential-registry-holder-prover)
       - [Agent Issuer-Verifier](#agent-issuer-verifier)
+  - [OpenAPI](#openapi)
 - [Endnotes](#endnotes)
 
 # Introduction
@@ -170,6 +172,24 @@ TODO
 
 Credential Registry provides a set of RESTful web services you can use to query data from your third-party application, an introduction to use of these API's is available [here](docs/IndyCat-REST-Services.md).
 
+### Web Hooks
+
+Indy Catalyst provides a web hook facility for interested parties to subscribe to notifications for credential updates.
+
+There are 3 subscription types supported:
+
+- New - notification for any new credential (i.e. newly registered organization) of a specific type
+- Stream - any updates for a specific stream - organization (by topic id) and type
+- Topic - any updates for a specific organization (Topic)
+
+Interested parties must first register, which creates an ID and password they use to manage their subscriptions.  They can then add and remove subscriptions.
+
+They must also provide a REST endpoint for the notifications - they can provide an endpoint with their scubscription and/or an endpoint with each separate subscription.
+
+A test "echo" endpoint using the code at [echo-service](echo-service) will be started on `localhost:8000` when executing `./manage start`. The service can also be run separately in Play With Docker or Play With VON, and used as the endpoint for the web hooks.
+
+More details are available [here](docs/IndyCat-REST-Hooks.md).
+
 ### Agent
 
 ### Agent Driver
@@ -180,9 +200,14 @@ Credential Registry provides a set of RESTful web services you can use to query 
 
 #### Agent Issuer-Verifier
 
+## OpenAPI
+
+drf-yasg is used to publish a OpenAPI 2.0 spec of the API. Until a 3.x spec generator is available, it is possible to download the up-to-date spec from [here](https://orgbook.gov.bc.ca/api/?format=openapi) and run it through a [2-to-3 converter](https://mermade.org.uk/openapi-converter).
+
 # Endnotes
 
 <b id="f1">1:</b> A thing with distinct and independent existence such as a person, organization, concept, or device. Source: [Verifiable Claims Data Model and Representations 1.0](https://www.w3.org/2017/05/vc-data-model/CGFR/2017-05-01/#dfn-entity). [↩](#a1)
 
 <b id="f2">2:</b> A verifiable credential is a tamper-evident credential that has authorship that can be cryptographically verified. Source: [W3C
 Verifiable Credentials Data Model 1.0](https://w3c.github.io/vc-data-model/#dfn-credential) [↩](#a2)
+

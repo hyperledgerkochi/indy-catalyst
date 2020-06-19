@@ -1,3 +1,0 @@
-aries_cloudagent
-
-marshmallow==3.0.0rc3
