@@ -44,4 +44,4 @@ asgiref~=3.1.2
 # rest hooks and related
 django-rest-hooks==1.5.0
 drf-nested-routers
-celery~=4.3.0
+celery~=4.4.0rc5
